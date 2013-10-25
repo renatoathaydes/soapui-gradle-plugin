@@ -8,6 +8,18 @@ import org.gradle.api.Project
  */
 class TestPlugin implements Plugin<Project> {
 
+	@Override
+	void apply( Project project ) {
+		project.extensions.create( 'soapui', SoapUIConfig )
+		project.task( 'soapuiTest' ) << {
+			println "Hello World!"
+		}
+	}
+
+}
+
+class SoapUIConfig {
+
 	/**
 	 * The soapUI project file to test with
 	 *
@@ -15,7 +27,7 @@ class TestPlugin implements Plugin<Project> {
 	 * default-value="${project.artifactId}-soapui-project.xml"
 	 */
 
-	private String projectFile;
+	String projectFile
 
 	/**
 	 * The TestSuite to run project file to test with
@@ -23,7 +35,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.testsuite}"
 	 */
 
-	private String testSuite;
+	String testSuite
 
 	/**
 	 * The TestCase to run project file to test with
@@ -31,7 +43,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.testcase}"
 	 */
 
-	private String testCase;
+	String testCase
 
 	/**
 	 * The username to use for authentication challenges
@@ -39,7 +51,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.username}"
 	 */
 
-	private String username;
+	String username
 
 	/**
 	 * The password to use for authentication challenges
@@ -47,7 +59,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.password}"
 	 */
 
-	private String password;
+	String password
 
 	/**
 	 * The WSS password-type to use for any authentications. Setting this will
@@ -58,7 +70,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.wssPasswordType}"
 	 */
 
-	private String wssPasswordType;
+	String wssPasswordType
 
 	/**
 	 * The domain to use for authentication challenges
@@ -66,7 +78,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.domain}"
 	 */
 
-	private String domain;
+	String domain
 
 	/**
 	 * The host to use for requests
@@ -74,7 +86,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.host}"
 	 */
 
-	private String host;
+	String host
 
 	/**
 	 * Overrides the endpoint to use for requests
@@ -82,7 +94,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.endpoint}"
 	 */
 
-	private String endpoint;
+	String endpoint
 
 	/**
 	 * Sets the output folder for reports
@@ -90,7 +102,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.outputFolder}"
 	 */
 
-	private String outputFolder;
+	String outputFolder
 
 	/**
 	 * Turns on printing of reports
@@ -98,7 +110,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.printReport}"
 	 */
 
-	private boolean printReport;
+	boolean printReport
 
 	/**
 	 * Enabled interactive groovy scripts
@@ -106,7 +118,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.interactive}"
 	 */
 
-	private boolean interactive;
+	boolean interactive
 
 	/**
 	 * Turns on exporting of all results
@@ -114,7 +126,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.exportAll}"
 	 */
 
-	private boolean exportAll;
+	boolean exportAll
 
 	/**
 	 * Turns on creation of reports in junit style
@@ -122,7 +134,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.junitReport}"
 	 */
 
-	private boolean junitReport;
+	boolean junitReport
 
 	/**
 	 * Specifies soapUI settings file to use
@@ -130,7 +142,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.settingsFile}"
 	 */
 
-	private String settingsFile;
+	String settingsFile
 
 	/**
 	 * Tells Test Runner to skip tests.
@@ -138,21 +150,21 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.skip}"
 	 */
 
-	private boolean skip;
+	boolean skip
 
 	/**
 	 * Specifies password for encrypted soapUI project file
 	 *
 	 * @parameter expression="${soapui.project.password}"
 	 */
-	private String projectPassword;
+	String projectPassword
 
 	/**
 	 * Specifies password for encrypted soapui-settings file
 	 *
 	 * @parameter expression="${soapui.settingsFile.password}"
 	 */
-	private String settingsPassword;
+	String settingsPassword
 
 	/**
 	 * If set ignore failed tests
@@ -160,7 +172,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.testFailIgnore}"
 	 */
 
-	private boolean testFailIgnore;
+	boolean testFailIgnore
 
 	/**
 	 * Specified global property values soapui.saveAfterRun
@@ -168,7 +180,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.globalProperties}"
 	 */
 
-	private String[] globalProperties;
+	String[] globalProperties
 
 	/**
 	 * Specified project property values
@@ -176,7 +188,7 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${soapui.projectProperties}"
 	 */
 
-	private String[] projectProperties;
+	String[] projectProperties
 
 	/**
 	 * Saves project file after running tests
@@ -184,18 +196,13 @@ class TestPlugin implements Plugin<Project> {
 	 * @parameter expression="${}"
 	 */
 
-	private boolean saveAfterRun;
+	boolean saveAfterRun
 
 	/**
 	 * SoapUI Properties.
 	 *
 	 * @parameter expression="${soapuiProperties}"
 	 */
-	private Properties soapuiProperties;
+	Properties soapuiProperties
 
-
-	@Override
-	void apply( Project t ) {
-
-	}
 }
