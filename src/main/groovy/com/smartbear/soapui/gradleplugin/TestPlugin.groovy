@@ -1,5 +1,9 @@
 package com.smartbear.soapui.gradleplugin
 
+import com.eviware.soapui.SoapUI
+import com.eviware.soapui.tools.SoapUITestCaseRunner
+import com.smartbear.soapui.gradleplugin.internal.PropertyTransferer
+import org.gradle.api.GradleException
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 
@@ -8,12 +12,34 @@ import org.gradle.api.Project
  */
 class TestPlugin implements Plugin<Project> {
 
+	def transferer = new PropertyTransferer()
+
 	@Override
 	void apply( Project project ) {
 		project.extensions.create( 'soapui', SoapUIConfig )
 		project.task( 'soapuiTest' ) << {
-			println "Hello World!"
+			ensureCanRun project
+			def runner = new SoapUITestCaseRunner( "SoapUI ${SoapUI.SOAPUI_VERSION}" +
+					" Gradle TestCase Runner" )
+			transferer.transferPropertiesFrom( project.soapui ).to( runner )
+
+			try {
+				runner.run()
+			} catch ( Throwable e ) {
+				e.printStackTrace()
+				project.logger.error( "SoapUI Failure: $e" )
+				throw new GradleException( "SoapUI Test(s) failed", e )
+			}
 		}
+	}
+
+	void ensureCanRun( project ) {
+		if ( !project.soapui ) {
+			throw new GradleException( 'SoapUI Plugin: no soapui configuration found' )
+		}
+		def config = project.soapui as SoapUIConfig
+		if ( !config.projectFile )
+			throw new GradleException( 'SoapUI Plugin: projectFile is required' )
 	}
 
 }
@@ -204,5 +230,11 @@ class SoapUIConfig {
 	 * @parameter expression="${soapuiProperties}"
 	 */
 	Properties soapuiProperties
+
+	void setSoapuiProperties( Map propsMap ) {
+		def props = new Properties()
+		propsMap.each { key, value -> props[ key as String ] = value as String }
+		this.@soapuiProperties = props
+	}
 
 }

@@ -1,0 +1,16 @@
+buildscript {
+	repositories {
+		mavenLocal()
+		mavenCentral()
+		maven { url "http://www.eviware.com/repository/maven2" }
+	}
+	dependencies {
+		classpath group: 'com.smartbear.soapui', name: 'soapui-gradle-plugin', version: '1.0-SNAPSHOT'
+	}
+}
+
+apply plugin: 'soapui'
+
+soapui {
+	projectFile = 'soapui-projects/sample-soapui-project.xml'
+}
